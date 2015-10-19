@@ -1,5 +1,7 @@
 # Coursera-Getting-n-cleaning-data-project
 
+### Robert C. Wang
+
 Coursera course #3: Getting and Cleaning Data - Course Project: Reshape smartphone accelerometers data into tidy data 
 
 ## Project Assignment
@@ -22,15 +24,17 @@ You should create one R script called run_analysis.R that does the following.
 1. Appropriately labels the data set with descriptive variable names. 
 1. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
-
-
-
-
-
 ---
-Project: Course Project for "Getting and Cleaning Data" (Coursera)
-Author: Robert C. Wang
-Script: run_analysis.R
-Output: tidy_data.txt 
----
+
+## Packages Used
+
+I use 'plye' and 'reshape2' to reshape data frame to make tidy data frame.
+
+```{r}
+library(plyr)
+library(reshape2)
+```
+
+
+
 
