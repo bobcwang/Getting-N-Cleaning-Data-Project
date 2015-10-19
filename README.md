@@ -92,5 +92,162 @@ The size of the merged data frame and sub-section are shown below:
 >
 ```
 
+## Change Variable Names (Descritive Names)
+
+Get variable names from features.txt file.
+Clean up the names by converting characters '(),' to '-' 
+and delete the repeated '-' characters.
+Set the data_all to descriptive names.
+
+```{r}
+feature_names <- gsub("-$","",
+                      gsub("-+","-",
+                           gsub("[(),]","-",
+                                read.table("UCI HAR Dataset/features.txt")[,2])))
+names(data_all) <- c("Subject","Activity",feature_names)
+```{r}
+
+For example, now the variable names are shown below:
+
+```{r}
+> data_all[1:3,c(1:4,560:563)]
+  subject Activity tBodyAcc-mean-X tBodyAcc-mean-Y
+1       1        5       0.2885845     -0.02029417
+2       1        5       0.2784188     -0.01641057
+3       1        5       0.2796531     -0.01946716
+angle-tBodyGyroJerkMean-gravityMean angle-X-gravityMean angle-Y-gravityMean
+1                         -0.01844588          -0.8412468           0.1799406
+2                          0.70351059          -0.8447876           0.1802889
+3                          0.80852908          -0.8489335           0.1806373
+angle-Z-gravityMean
+1         -0.05862692
+2         -0.05431672
+3         -0.04911782
+> 
+```
+
+## Change the Activity Number to Names
+Read activity label from file.
+Then replace activity 'integer' with the label, for easy reading
+
+```{r}
+activity_labels <- read.table("UCI HAR Dataset/activity_labels.txt")[,2]
+data_all$Activity <- activity_labels[data_all$Activity]
+```
+
+Now, the activity names are shown below:
+
+```{r}
+> activity_labels
+[1] WALKING            WALKING_UPSTAIRS   WALKING_DOWNSTAIRS
+[4] SITTING            STANDING           LAYING            
+6 Levels: LAYING SITTING STANDING WALKING ... WALKING_UPSTAIRS
+> 
+> data_all[1:3,c(1:4,560:563)]
+  Subject Activity tBodyAcc-mean-X tBodyAcc-mean-Y
+1       1 STANDING       0.2885845     -0.02029417
+2       1 STANDING       0.2784188     -0.01641057
+3       1 STANDING       0.2796531     -0.01946716
+  angle-tBodyGyroJerkMean-gravityMean angle-X-gravityMean
+1                         -0.01844588          -0.8412468
+2                          0.70351059          -0.8447876
+3                          0.80852908          -0.8489335
+  angle-Y-gravityMean angle-Z-gravityMean
+1           0.1799406         -0.05862692
+2           0.1802889         -0.05431672
+3           0.1806373         -0.04911782
+> 
+```
+
+## Create Tidy Data
+
+Use melt() function from library(reshape2) to change the data frame
+into a long data frame.
+melt() will take all the columns except the ones we single out 
+as id variables and put them in the same column.
+
+Then we can use ddply() to compute mean and sd for each row,
+that is, for each combination of subject, activity and measurement
+
+```{r}
+melted <- melt(data_all, id.vars=c("Subject", "Activity"))
+summaried <- ddply(melted, c("Subject", "Activity", "variable"), summarise,
+                   mean = mean(value), sd = sd(value))
+names(summaried) <- c("Subject","Activity","Feature","Avg.Measurement","SD")
+```
+
+Now the tiddy data will look as below:
+
+```{r}
+> head(summaried)
+  Subject Activity         Feature Avg.Measurement        SD
+1       1   LAYING tBodyAcc-mean-X      0.22159824 0.1689304
+2       1   LAYING tBodyAcc-mean-Y     -0.04051395 0.1186758
+3       1   LAYING tBodyAcc-mean-Z     -0.11320355 0.1740471
+4       1   LAYING  tBodyAcc-std-X     -0.92805647 0.1229574
+5       1   LAYING  tBodyAcc-std-Y     -0.83682741 0.3311775
+6       1   LAYING  tBodyAcc-std-Z     -0.82606140 0.2885529
+> 
+> tail(summaried)
+      Subject         Activity                             Feature
+85855      30 WALKING_UPSTAIRS  angle-tBodyAccJerkMean-gravityMean
+85856      30 WALKING_UPSTAIRS     angle-tBodyGyroMean-gravityMean
+85857      30 WALKING_UPSTAIRS angle-tBodyGyroJerkMean-gravityMean
+85858      30 WALKING_UPSTAIRS                 angle-X-gravityMean
+85859      30 WALKING_UPSTAIRS                 angle-Y-gravityMean
+85860      30 WALKING_UPSTAIRS                 angle-Z-gravityMean
+      Avg.Measurement         SD
+85855      0.08689401 0.42186639
+85856     -0.03620120 0.73964131
+85857      0.01748886 0.54026824
+85858     -0.79011431 0.02598948
+85859      0.24097541 0.01738028
+85860      0.03739065 0.01800404
+>
+```
+
+## Write Tidy Data to a Text File
+
+The following script write the tidy data to **tidy_data.txt** file:
+
+```{r}
+tidy_data <- summaried[,1:4]
+write.table(tidy_data, file = "tidy_data.txt", row.name=FALSE)
+```
+
+Here are the head() and tail() fo the tidy data:
+
+```{r}
+> head(tidy_data)
+  Subject Activity         Feature Avg.Measurement
+1       1   LAYING tBodyAcc-mean-X      0.22159824
+2       1   LAYING tBodyAcc-mean-Y     -0.04051395
+3       1   LAYING tBodyAcc-mean-Z     -0.11320355
+4       1   LAYING  tBodyAcc-std-X     -0.92805647
+5       1   LAYING  tBodyAcc-std-Y     -0.83682741
+6       1   LAYING  tBodyAcc-std-Z     -0.82606140
+> 
+> tail(tidy_data)
+      Subject         Activity                             Feature
+85855      30 WALKING_UPSTAIRS  angle-tBodyAccJerkMean-gravityMean
+85856      30 WALKING_UPSTAIRS     angle-tBodyGyroMean-gravityMean
+85857      30 WALKING_UPSTAIRS angle-tBodyGyroJerkMean-gravityMean
+85858      30 WALKING_UPSTAIRS                 angle-X-gravityMean
+85859      30 WALKING_UPSTAIRS                 angle-Y-gravityMean
+85860      30 WALKING_UPSTAIRS                 angle-Z-gravityMean
+      Avg.Measurement
+85855      0.08689401
+85856     -0.03620120
+85857      0.01748886
+85858     -0.79011431
+85859      0.24097541
+85860      0.03739065
+> 
+```
+
+
+
+
+
 
 
