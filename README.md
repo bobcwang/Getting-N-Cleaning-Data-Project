@@ -1,6 +1,6 @@
 # Coursera-Getting-n-cleaning-data-project
 
-### Robert C. Wang
+#### Robert C. Wang
 
 Coursera course #3: Getting and Cleaning Data - Course Project: Reshape smartphone accelerometers data into tidy data 
 
@@ -35,6 +35,37 @@ library(plyr)
 library(reshape2)
 ```
 
+## Read Data Files
+
+The following script first defines two list of data file names:
+'train_files' and 'test_files'.
+The files are ordered by 
+
+1. Subject_train.txt - This file has 1 column with subject number (range 1:30)
+1. y_train.txt - This file has 1 column with activity number (range 1:6)
+1. X_train.txt - This file has 561 columns with measurement values
+
+where all three files have the same row numbers.
+The 'test' data files are organized the same way.
+
+It then read and merge the data files:
+
+1. Read the 'train_files' and merge them with cbind() function 
+1. Read the 'test_files' and merge them with cbind() function 
+1. Merge the above data frames with rbind() function
+
+```{r}
+train_files <- sprintf("UCI HAR Dataset/%s/%s_%s.txt","train",c("subject","y","X"),"train")
+test_files  <- sprintf("UCI HAR Dataset/%s/%s_%s.txt","test", c("subject","y","X"),"test")
+
+data_all <- rbind(do.call("cbind", lapply(train_files, read.table)),
+                  do.call("cbind", lapply(test_files, read.table)))
+```
+
+Read files from data directories & merge them with cbind()
+where the number of columns is 1 + 1 + 561 = 563
+Then merge the train and test data frame with rbind(),
+as both have the same number of columns (563)
 
 
 
