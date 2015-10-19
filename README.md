@@ -28,7 +28,11 @@ You should create one R script called run_analysis.R that does the following.
 
 ## Packages Used
 
-I use 'plye' and 'reshape2' to reshape data frame to make tidy data frame.
+I am following the approach shown in the article
+"[Using R: quickly calculating summary statistics from a data frame](https://martinsbioblogg.wordpress.com/2014/03/25/using-r-quickly-calculating-summary-statistics-from-a-data-frame/)"
+(by mrtnj)
+to use **melt** and **ddply** to reshape data frame to make tidy data frame
+that requires **plyr** and **reshape2** packages.
 
 ```{r}
 library(plyr)
