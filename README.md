@@ -35,24 +35,9 @@ library(plyr)
 library(reshape2)
 ```
 
-## Read Data Files
+## Reading Data Files and Merge Data Frames
 
-The following script first defines two list of data file names:
-'train_files' and 'test_files'.
-The files are ordered by 
-
-1. Subject_train.txt - This file has 1 column with subject number (range 1:30)
-1. y_train.txt - This file has 1 column with activity number (range 1:6)
-1. X_train.txt - This file has 561 columns with measurement values
-
-where all three files have the same row numbers.
-The 'test' data files are organized the same way.
-
-It then read and merge the data files:
-
-1. Read the 'train_files' and merge them with cbind() function 
-1. Read the 'test_files' and merge them with cbind() function 
-1. Merge the above data frames with rbind() function
+The following script read all data files and merge them into one data frame:
 
 ```{r}
 train_files <- sprintf("UCI HAR Dataset/%s/%s_%s.txt","train",c("subject","y","X"),"train")
@@ -62,10 +47,50 @@ data_all <- rbind(do.call("cbind", lapply(train_files, read.table)),
                   do.call("cbind", lapply(test_files, read.table)))
 ```
 
-Read files from data directories & merge them with cbind()
-where the number of columns is 1 + 1 + 561 = 563
-Then merge the train and test data frame with rbind(),
-as both have the same number of columns (563)
+It first defines two variables 
+'train_files' and 'test_files' 
+contain the list of data file names.
+For example, 'train_files' has the files, in the specific order:
+
+1. Subject_train.txt - This file has 1 column with subject number (range 1:30)
+1. y_train.txt - This file has 1 column with activity number (range 1:6)
+1. X_train.txt - This file has 561 columns with measurement values
+
+All three files have the same row numbers 7352.
+The 'test' data files are organized the same way.
+
+```{r}
+> train_files
+[1] "UCI HAR Dataset/train/subject_train.txt"
+[2] "UCI HAR Dataset/train/y_train.txt"      
+[3] "UCI HAR Dataset/train/X_train.txt"      
+> test_files
+[1] "UCI HAR Dataset/test/subject_test.txt" "UCI HAR Dataset/test/y_test.txt"      
+[3] "UCI HAR Dataset/test/X_test.txt"      
+> 
+```
+
+It then read and merge the data files:
+
+1. Read the 'train_files' and merge them with cbind() function 
+   The merged data frame has 7352 rows and 563 (= 1 + 1 + 561) columns.
+1. Read the 'test_files' and merge them with cbind() function 
+   The merged data frame has 2947 rows and 563 (= 1 + 1 + 561) columns.
+1. Merge the above data frames with rbind() function
+   The merged data frame has 10299 rows and 563 columns.
+
+The size of the merged data frame and sub-section are shown below:
+   
+```{r}
+> dim(data_all)
+[1] 10299   563
+> data_all[1:3,c(1:4,560:563)]
+  V1 V1.1      V1.2          V2        V558       V559      V560        V561
+1  1    5 0.2885845 -0.02029417 -0.01844588 -0.8412468 0.1799406 -0.05862692
+2  1    5 0.2784188 -0.01641057  0.70351059 -0.8447876 0.1802889 -0.05431672
+3  1    5 0.2796531 -0.01946716  0.80852908 -0.8489335 0.1806373 -0.04911782
+>
+```
 
 
 
