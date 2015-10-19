@@ -115,11 +115,11 @@ For example, now the variable names are shown below:
 1       1        5       0.2885845     -0.02029417
 2       1        5       0.2784188     -0.01641057
 3       1        5       0.2796531     -0.01946716
-angle-tBodyGyroJerkMean-gravityMean angle-X-gravityMean angle-Y-gravityMean
+  angle-tBodyGyroJerkMean-gravityMean angle-X-gravityMean angle-Y-gravityMean
 1                         -0.01844588          -0.8412468           0.1799406
 2                          0.70351059          -0.8447876           0.1802889
 3                          0.80852908          -0.8489335           0.1806373
-angle-Z-gravityMean
+  angle-Z-gravityMean
 1         -0.05862692
 2         -0.05431672
 3         -0.04911782
