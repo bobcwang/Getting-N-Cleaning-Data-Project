@@ -48,16 +48,16 @@ data_all <- rbind(do.call("cbind", lapply(train_files, read.table)),
 ```
 
 It first defines two variables 
-'train_files' and 'test_files' 
+**train_files** and **test_files**
 contain the list of data file names.
 For example, 'train_files' has the files, in the specific order:
 
-1. Subject_train.txt - This file has 1 column with subject number (range 1:30)
-1. y_train.txt - This file has 1 column with activity number (range 1:6)
-1. X_train.txt - This file has 561 columns with measurement values
+1. **Subject_train.txt** - This file has 1 column with subject number (range 1:30)
+1. **y_train.txt** - This file has 1 column with activity number (range 1:6)
+1. **X_train.txt** - This file has 561 columns with measurement values
 
 All three files have the same row numbers 7352.
-The 'test' data files are organized the same way.
+The **test** data files are organized the same way.
 
 ```{r}
 > train_files
@@ -72,9 +72,9 @@ The 'test' data files are organized the same way.
 
 It then read and merge the data files:
 
-1. Read the 'train_files' and merge them with cbind() function 
+1. Read the **train_files** and merge them with cbind() function 
    The merged data frame has 7352 rows and 563 (= 1 + 1 + 561) columns.
-1. Read the 'test_files' and merge them with cbind() function 
+1. Read the **test_files** and merge them with cbind() function 
    The merged data frame has 2947 rows and 563 (= 1 + 1 + 561) columns.
 1. Merge the above data frames with rbind() function
    The merged data frame has 10299 rows and 563 columns.
