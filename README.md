@@ -109,7 +109,7 @@ feature_names <- gsub("-$","",
                            gsub("[(),]","-",
                                 read.table("UCI HAR Dataset/features.txt")[,2])))
 names(data_all) <- c("Subject","Activity",feature_names)
-```{r}
+```
 
 For example, now the variable names are shown below:
 
