@@ -17,7 +17,9 @@ The 4 varaibles are:
 
 ## List of Features
 
+-------------------
 | tBodyAcc-mean-X |
+-------------------
 | tBodyAcc-mean-Y |
 | tBodyAcc-mean-Z |
 | tBodyAcc-std-X |
@@ -2879,3 +2881,4 @@ The 4 varaibles are:
 | angle-X-gravityMean |
 | angle-Y-gravityMean |
 | angle-Z-gravityMean |
+-------------------
